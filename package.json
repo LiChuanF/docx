@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -16,8 +16,10 @@
     "@tiptap/starter-kit": "^3.26.0",
     "@tiptap/vue-2": "^3.26.0",
     "core-js": "^3.8.3",
+    "docx-preview": "^0.3.7",
     "file-saver": "^2.0.5",
     "html-docx-js-typescript": "^0.1.5",
+    "mammoth": "^1.12.0",
     "tiptap-extension-font-size": "^1.2.0",
     "turndown": "^7.2.4",
     "vue": "^2.6.14"
@@ -28,6 +30,7 @@
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "docx": "^9.7.1",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "vue-template-compiler": "^2.6.14"
