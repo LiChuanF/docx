@@ -35,23 +35,24 @@
 
       <input type="color" :value="currentColor" @input="setColor($event.target.value)">
 
-      <button :class="{ active: editor.isActive('bold') }" @click="editor.chain().focus().toggleBold().run()"><b>B</b></button>
-      <button :class="{ active: editor.isActive('italic') }" @click="editor.chain().focus().toggleItalic().run()"><i>I</i></button>
-      <button :class="{ active: editor.isActive('underline') }" @click="editor.chain().focus().toggleUnderline().run()"><u>U</u></button>
+      <button :class="{ active: editor.isActive('bold') }"
+        @click="editor.chain().focus().toggleBold().run()"><b>B</b></button>
+      <button :class="{ active: editor.isActive('italic') }"
+        @click="editor.chain().focus().toggleItalic().run()"><i>I</i></button>
+      <button :class="{ active: editor.isActive('underline') }"
+        @click="editor.chain().focus().toggleUnderline().run()"><u>U</u></button>
 
-      <button :class="{ active: editor.isActive({ textAlign: 'left' }) }" @click="editor.chain().focus().setTextAlign('left').run()">左</button>
-      <button :class="{ active: editor.isActive({ textAlign: 'center' }) }" @click="editor.chain().focus().setTextAlign('center').run()">中</button>
-      <button :class="{ active: editor.isActive({ textAlign: 'right' }) }" @click="editor.chain().focus().setTextAlign('right').run()">右</button>
+      <button :class="{ active: editor.isActive({ textAlign: 'left' }) }"
+        @click="editor.chain().focus().setTextAlign('left').run()">左</button>
+      <button :class="{ active: editor.isActive({ textAlign: 'center' }) }"
+        @click="editor.chain().focus().setTextAlign('center').run()">中</button>
+      <button :class="{ active: editor.isActive({ textAlign: 'right' }) }"
+        @click="editor.chain().focus().setTextAlign('right').run()">右</button>
 
       <span class="divider" />
 
       <!-- 选中文字才显示的 AI 润色 -->
-      <button
-        v-if="hasSelection"
-        class="ai-polish"
-        :disabled="polishing"
-        @click="polishSelection"
-      >
+      <button v-if="hasSelection" class="ai-polish" :disabled="polishing" @click="polishSelection">
         {{ polishing ? '润色中…' : '✨ AI 润色选中' }}
       </button>
     </div>
@@ -292,19 +293,51 @@ export default {
 </script>
 
 <style>
-.app { max-width: 1100px; margin: 0 auto; padding: 16px; background: #e8eaed; min-height: 100vh; }
+.app {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px;
+  background: #e8eaed;
+  min-height: 100vh;
+}
 
-.toolbar-top, .toolbar-format {
-  display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
-  padding: 8px; background: #f5f5f5; border-radius: 4px; margin-bottom: 8px;
+.toolbar-top,
+.toolbar-format {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  padding: 8px;
+  background: #f5f5f5;
+  border-radius: 4px;
+  margin-bottom: 8px;
 }
+
 .toolbar-format button {
-  min-width: 32px; padding: 4px 8px; border: 1px solid #ddd; background: #fff; cursor: pointer;
+  min-width: 32px;
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
 }
-.toolbar-format button.active { background: #1976d2; color: #fff; }
-.toolbar-format .divider { width: 1px; height: 20px; background: #ccc; margin: 0 6px; }
+
+.toolbar-format button.active {
+  background: #1976d2;
+  color: #fff;
+}
+
+.toolbar-format .divider {
+  width: 1px;
+  height: 20px;
+  background: #ccc;
+  margin: 0 6px;
+}
+
 .toolbar-format .ai-polish {
-  background: linear-gradient(90deg, #7b2ff7, #f107a3); color: #fff; border: none; padding: 6px 12px;
+  background: linear-gradient(90deg, #7b2ff7, #f107a3);
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
 }
 
 /* ------------------------------------------------------------------
@@ -317,10 +350,11 @@ export default {
   min-height: 297mm;
   padding: 37mm 26mm 35mm 28mm;
   background: #fff;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
   margin: 16px auto;
   box-sizing: border-box;
 }
+
 .paper .ProseMirror {
   outline: none;
   min-height: 220mm;
@@ -382,7 +416,8 @@ export default {
   border-top: 1px solid #c00000;
   margin: 6px 0 0;
 }
-.paper .ProseMirror hr + hr {
+
+.paper .ProseMirror hr+hr {
   border-top-width: 4px;
   margin: 4px 0 32px;
 }

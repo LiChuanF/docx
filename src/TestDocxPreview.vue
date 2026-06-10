@@ -11,7 +11,7 @@
 
     <!-- 原生 selection + execCommand 工具栏 — 仅在可编辑时显示 -->
     <div v-if="editable" class="toolbar-format">
-      <select @change="applyFontFamily($event.target.value); $event.target.value=''">
+      <select @change="applyFontFamily($event.target.value); $event.target.value = ''">
         <option value="">字体</option>
         <option value="仿宋_GB2312, FangSong, serif">仿宋_GB2312</option>
         <option value="SimSun, serif">宋体</option>
@@ -20,7 +20,7 @@
         <option value="方正小标宋简体, SimSun, serif">方正小标宋</option>
       </select>
 
-      <select @change="applyFontSize($event.target.value); $event.target.value=''">
+      <select @change="applyFontSize($event.target.value); $event.target.value = ''">
         <option value="">字号</option>
         <option value="42pt">初号</option>
         <option value="36pt">小初</option>
@@ -56,6 +56,7 @@
 
 <script>
 import { renderAsync } from 'docx-preview'
+import { preprocessShapeLines } from "./utils/preprocessShapeLine";
 
 export default {
   data () {
@@ -69,10 +70,12 @@ export default {
     async onFileChange (e) {
       const file = e.target.files[0]
       if (!file) return
+      const original = await file.arrayBuffer();
+      const buf = await preprocessShapeLines(original);
       this.status = '渲染中…'
       try {
         this.$refs.container.innerHTML = ''
-        await renderAsync(file, this.$refs.container, null, {
+        await renderAsync(buf, this.$refs.container, null, {
           className: 'docx',
           inWrapper: true,
           breakPages: true,
@@ -173,30 +176,67 @@ export default {
 </script>
 
 <style>
-.app { max-width: 1100px; margin: 0 auto; padding: 16px; background: #e8eaed; min-height: 100vh; }
-.toolbar-top, .toolbar-format {
-  display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
-  padding: 8px; background: #f5f5f5; border-radius: 4px; margin-bottom: 8px;
+.app {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px;
+  background: #e8eaed;
+  min-height: 100vh;
 }
-.toolbar-top .hint, .toolbar-format .hint { color: #666; font-size: 13px; margin-left: 8px; }
-.toolbar-format button {
-  min-width: 32px; padding: 4px 8px; border: 1px solid #ddd; background: #fff; cursor: pointer;
-}
-.toolbar-format .divider { width: 1px; height: 20px; background: #ccc; margin: 0 6px; }
 
-.paper-wrap { display: flex; justify-content: center; }
+.toolbar-top,
+.toolbar-format {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  padding: 8px;
+  background: #f5f5f5;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.toolbar-top .hint,
+.toolbar-format .hint {
+  color: #666;
+  font-size: 13px;
+  margin-left: 8px;
+}
+
+.toolbar-format button {
+  min-width: 32px;
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+}
+
+.toolbar-format .divider {
+  width: 1px;
+  height: 20px;
+  background: #ccc;
+  margin: 0 6px;
+}
+
+.paper-wrap {
+  display: flex;
+  justify-content: center;
+}
 
 .docx-container :deep(.docx-wrapper) {
   background: #e8eaed;
   padding: 16px 0;
 }
+
 .docx-container :deep(.docx-wrapper > section.docx) {
-  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
   margin-bottom: 16px;
 }
+
 .docx-container :deep([contenteditable="true"]) {
   outline: 1px dashed #1976d2;
 }
+
 .docx-container :deep([contenteditable="true"]:focus) {
   outline: 2px solid #1976d2;
 }
