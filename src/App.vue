@@ -4,10 +4,19 @@ import { DocxEditor } from "@eigenpal/docx-editor-vue";
 import type { DocxEditorRef } from "@eigenpal/docx-editor-vue";
 import "@eigenpal/docx-editor-vue/styles.css";
 import zhCN from "@eigenpal/docx-editor-i18n/zh-CN";
+import { preprocessShapeLines } from "./utils/preprocessShapeLine";
 
 const buf = ref<ArrayBuffer | null>(null);
 const editorRef = ref<DocxEditorRef | null>(null);
 const polishing = ref(false);
+
+async function onFileChange(e: Event) {
+  const input = e.target as HTMLInputElement;
+  const file = input.files?.[0];
+  if (!file) return;
+  const original = await file.arrayBuffer();
+  buf.value = await preprocessShapeLines(original);
+}
 
 /** 获取当前选中的文字信息 */
 function getSelectedText(): {
@@ -74,13 +83,11 @@ onBeforeUnmount(() =>
 
 <template>
   <div class="editor-shell">
-    <DocxEditor
-      ref="editorRef"
-      :document-buffer="buf"
-      :i18n="zhCN"
-      mode="editing"
-      :toolbar-extra="renderToolbarExtra"
-    />
+    <div class="file-bar">
+      <input type="file" accept=".docx" @change="onFileChange" />
+    </div>
+    <DocxEditor ref="editorRef" :document-buffer="buf" :i18n="zhCN" mode="editing"
+      :toolbar-extra="renderToolbarExtra" />
   </div>
 </template>
 
@@ -89,6 +96,11 @@ onBeforeUnmount(() =>
   height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+.file-bar {
+  padding: 6px 8px;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .toolbar-extra {
